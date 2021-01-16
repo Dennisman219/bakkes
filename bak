@@ -3,15 +3,17 @@
 dir=".bakkes"
 
 if [ "${1}" = "" ]; then
+	echo "Bakkes 1.1 - www.github.com/dennisman219/bakkes"
+	echo ""
 	echo "Usage:"
 	echo "bak <option> <filename>"
 	echo ""
 	echo "Options:"
 	echo "	no option:	Create backup of file. Requires filename"
-	echo "-r	restore:	Restores backed up file. Requires filename"
-	echo "-l	list:		Lists backed up files"
-	echo "-d	delete:		Delete backed up file. Requires filename"
-	echo "-da	delete all:	Delete all backed up files"
+	echo "-r	--restore:	Restores backed up file. Requires filename"
+	echo "-l	--list:		Lists backed up files"
+	echo "-d	--delete:		Delete backed up file. Requires filename"
+	echo "-da	--delete all:	Delete all backed up files"
 	exit;
 fi
 
@@ -21,7 +23,7 @@ if [ ! -d "${dir}" ]; then
 	fi
 fi
 
-if [ "${1}" = "-r" ]; then
+if [ "${1}" = "-r" ] || [ "${1}" = "--restore" ]; then
 	target_name=${2}
 
 	if [ "${2: -2:1}" = "_" ]; then
@@ -34,26 +36,28 @@ if [ "${1}" = "-r" ]; then
 	
 	cp -r ${dir}/${2} ${target_name}
 	echo "Restored '${2}' to '${target_name}'"
-elif [ "${1}" = "-l" ]; then
+elif [ "${1}" = "-l" ] || [ "${1}" = "--list" ]; then
 	ls -Al ${dir}
-elif [ "${1}" = "-d" ]; then
+elif [ "${1}" = "-d" ] || [ "${1}" = "--delete" ]; then
 	rm -rf ${dir}/${2}
-elif [ "${1}" = "-da" ]; then
+elif [ "${1}" = "-da" ] || [ "${1}" = "--delete-all" ]; then
 	rm -rf ${dir}/*	
 else
 	filename=${1}
+	basename=${filename}
 	n=1	
 	
 	end=$((${#filename}-1))	
 	if [ "${filename:end:1}" = "/" ]; then
 		filename=${filename::-1}
+		basename=${filename}
 	fi
 	
 	#echo "Creating backup of '${1}'"
-	while [ -f "${dir}/${filename}" ] | [ -d "${dir}/${filename}" ]
+	while [[ -f "${dir}/${filename}" ]] || [[ -d "${dir}/${filename}" ]]
 	do
-		filename="${1}_${n}"
+		filename="${basename}_${n}"
 		((n=n+1))		
 	done
-	cp -r ${1} ${dir}/${filename} && echo "Saved as '${filename}'"
+	cp -r ${basename} ${dir}/${filename} && echo "Saved as '${filename}'"
 fi
