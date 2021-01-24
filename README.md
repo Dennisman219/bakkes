@@ -7,10 +7,10 @@ Bakkes is a simple command-line tool for saving and restoring files.
 Flag | Option | Description
 --- | --- | ---
 &nbsp; | no option | Create backup of file. Requires filename
--r | restore | Restores file from backup. Requires filename
--l | list | Lists saved files
--d | delete | Delete saved file. Requires filename
--da | delete all | Delete all saved files
+-r | --restore | Restores file from backup. Requires filename
+-l | --list | Lists saved files
+-d | --delete | Delete saved file. Requires filename
+-da | --delete-all | Delete all saved files
 
 ### Examples
 `bak file.txt`\
